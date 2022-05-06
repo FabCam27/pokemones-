@@ -22,6 +22,44 @@
    <button v-on:click="pokes(siguiente)" class="btn btn-primary"> siguiente</button> Total de Pokemones: {{totalPokes}} 
    <button v-on:click="pokes(anterior)" class="btn btn-warning"> anterior</button> 
   </div>  
+   <script>
+     var app=new Vue({
+  el:"#app1",
+  data:{  
+      titulo: "API de Pokemones",
+      urlAPI: "https://pokeapi.co/api/v2/pokemon",
+      pokemones : [],       
+      totalPokes: 0,
+      siguiente: "",
+      anterior: "",
+      poke: [],
+      nombrePoke:"",
+      urlImagen:"",
+  },  
+  mounted(){
+    this.pokes(this.urlAPI)
+    this.verPoke("https://pokeapi.co/api/v2/pokemon/1","bulbasaur");
+      },
+  methods:
+    {
+          pokes: async function(url) {
+              const response = await fetch(url);
+              this.pokemones = await response.json();
+              this.totalPokes=this.pokemones.count; 
+              this.siguiente=this.pokemones.next;
+              this.anterior=this.pokemones.previous;
+              this.pokemones = this.pokemones.results;
+                },
+            verPoke: async function (url, nombre) { 
+            const response = await fetch (url);
+            this.poke = await response.json();
+            this.poke=this.poke.sprites.other
+            this.nombrePoke=nombre;
+            this.urlImagen=this.poke.dream_world.front_default;
+            } 
+            },
+            }) // fin de objeto Vue
+   </script>
   
  
 </body></html>
